@@ -1,116 +1,17 @@
 @import "tailwindcss/preflight";
 @import "tailwindcss/utilities";
 
-/* -------------------------------------------------------
-   🌑 PREMIUM ONKIT GLOBAL THEME
-   Matte, muted, smooth gradient, Web3 luxury aesthetic
---------------------------------------------------------*/
-
 body {
-  min-height: 100vh;
-  color: #eaeaea;
-  font-family: var(--font-geist-sans);
-
-  /* Matte gradient background (like The Barcode but Onkit colors) */
-  background: radial-gradient(
-      circle at top,
-      #6d8894 0%,
-      #5d737e 40%,
-      #4d5f67 100%
-  );
-  background-attachment: fixed;
-
-  /* Very subtle noise texture */
-  position: relative;
+  background: #f3f4f6;
+  -webkit-font-smoothing: antialiased;
+}
+/* Smooth blur effect */
+.blur-xl {
+  filter: blur(20px);
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.12;
-  background-image: url("/noise.png"); /* optional: upload a noise texture */
-  background-size: 300px;
-}
-
-/* -------------------------------------------------------
-   🟧 Premium Button Style
---------------------------------------------------------*/
-.btn-generate {
-  background: linear-gradient(180deg, #cc6545 0%, #b95339 100%);
-  padding: 12px 22px;
-  color: white;
-  font-weight: 600;
-  border-radius: 14px;
-
-  box-shadow:
-    inset 0 2px 3px rgba(255,255,255,0.12),
-    0 4px 14px rgba(0,0,0,0.22);
-
-  transition: all 0.2s ease;
-}
-
-.btn-generate:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    inset 0 2px 4px rgba(255,255,255,0.18),
-    0 6px 18px rgba(0,0,0,0.28);
-}
-
-/* When generating… */
-.spinner {
-  border: 3px solid rgba(255,255,255,0.25);
-  border-top-color: white;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* --------------------------------------------------------
-   🟤 Premium Matte Card (Frame container)
----------------------------------------------------------*/
-.matte-card {
-  background: linear-gradient(180deg, rgba(55,60,64,0.6), rgba(38,43,46,0.8));
+/* Rounded + shadow for main block */
+.main-block {
   border-radius: 22px;
-
-  box-shadow:
-    0 6px 18px rgba(0,0,0,0.32),
-    inset 0 1px 1px rgba(255,255,255,0.06);
-}
-
-/* --------------------------------------------------------
-   🟡 Wallet Badge (premium gold)
----------------------------------------------------------*/
-.wallet-badge {
-  background: #e6a93e;
-  color: #332f27;
-  padding: 6px 12px;
-  border-radius: 12px;
-  font-weight: 600;
-
-  box-shadow: 0 0 12px rgba(230,169,62,0.32);
-}
-
-/* --------------------------------------------------------
-   ⚫ Optional Background Cyber Grid
-   (If you want a "barcode" cyber-tech background)
----------------------------------------------------------*/
-
-.cyber-grid {
-  background-image: url("/grid.png"); /* upload a cyber grid image */
-  background-size: cover;
-  background-position: center;
-  opacity: 0.14;
-  mix-blend-mode: overlay;
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
 }

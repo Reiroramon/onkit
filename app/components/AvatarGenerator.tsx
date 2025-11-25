@@ -30,19 +30,35 @@ export default function AvatarGenerator({ userPfp }: AvatarGeneratorProps) {
   }
 
   return (
-    <div className="w-full flex flex-col items-center gap-5">
-      <button onClick={generate} className="btn-primary">
-        {loading ? "Generating..." : "Generate Avatar"}
-      </button>
+    <div className="w-full flex flex-col items-center">
 
+      {/* INITIAL BLURRED PFP (300x300, centered) */}
+      {!image && userPfp && (
+        <div className="relative w-[300px] h-[300px] mb-6 rounded-2xl overflow-hidden">
+          <img
+            src={userPfp}
+            className="w-full h-full object-cover blur-xl scale-110 opacity-70"
+          />
+
+          {/* BUTTON IN CENTER OF BLUR */}
+          <button
+            onClick={generate}
+            disabled={loading}
+            className="absolute inset-0 flex items-center justify-center
+                       bg-black/30 text-white font-semibold text-lg rounded-2xl
+                       hover:bg-black/40 transition"
+          >
+            {loading ? "Generating..." : "Generate Onkit"}
+          </button>
+        </div>
+      )}
+
+      {/* OUTPUT IMAGE */}
       {image && (
-        <>
-          <div className="generated-image">
-            <img src={image} className="rounded-xl" />
-          </div>
-
-          <button className="btn-mint">Mint 230 $JESSE</button>
-        </>
+        <img
+          src={image}
+          className="w-full rounded-2xl shadow-lg"
+        />
       )}
     </div>
   );
