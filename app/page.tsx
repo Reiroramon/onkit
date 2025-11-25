@@ -8,7 +8,6 @@ import AvatarGenerator from "./components/AvatarGenerator";
 export default function Home() {
   const { address, isConnected } = useAccount();
   const { connectors, connect } = useConnect();
-
   const [pfp, setPfp] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -16,52 +15,69 @@ export default function Home() {
     async function init() {
       await sdk.actions.ready?.();
 
-      // auto connect
       const fc = connectors.find((c) => c.id === "farcasterMiniApp");
-      if (!isConnected && fc) {
-        connect({ connector: fc });
-      }
+      if (!isConnected && fc) connect({ connector: fc });
 
-      // get PFP
       const context = await sdk.context;
       if (context?.user?.pfpUrl) setPfp(context.user.pfpUrl);
     }
+
     init();
   }, [isConnected, connect, connectors]);
 
   return (
-    <main className="px-6 py-8 flex flex-col items-center gap-8">
+    <main className="flex flex-col items-center gap-6 px-6 py-8">
 
       {/* HEADER */}
-      <div className="w-full max-w-xl flex items-center justify-between">
+      <div className="w-full max-w-lg flex items-center justify-between">
+        
+        {/* User PFP */}
         {pfp && (
           <img
             src={pfp}
-            className="w-12 h-12 rounded-full border border-black/20"
+            className="w-12 h-12 rounded-full shadow-md border border-black/10"
           />
         )}
 
-        <div className="wallet-badge text-sm">
-          {address
-            ? `${address.slice(0, 6)}...${address.slice(-4)}`
-            : "Connecting..."}
+        {/* Wallet Badge */}
+        <div
+          className="px-4 py-2 rounded-xl bg-[#e6a93e] text-[#332f27] text-sm font-semibold shadow-[0_0_12px_rgba(230,169,62,0.35)]"
+        >
+          {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : "Connecting…"}
         </div>
       </div>
 
-      {/* MAIN BOX */}
-      <div className="matte-box w-full max-w-xl flex flex-col items-center gap-6">
-        <h1 className="text-[#86837c] text-xl font-semibold">Onkit</h1>
+      {/* MAIN CARD */}
+      <div className="w-full max-w-lg rounded-2xl p-6 shadow-xl"
+           style={{
+             background: "linear-gradient(165deg, #7d7a73 0%, #6f6c65 100%)",
+             boxShadow:
+               "0 6px 18px rgba(0,0,0,0.32), inset 0 1px 1px rgba(255,255,255,0.06)"
+           }}
+      >
+        <h1 className="text-[#86837c] text-xl font-semibold text-center tracking-wide mb-4">
+          Onkit
+        </h1>
 
-        <AvatarGenerator userPfp={pfp} />
+        <div className="flex justify-center mb-4">
+          <AvatarGenerator userPfp={pfp} />
+        </div>
 
+        {/* Generate Button */}
         <button
-          className="btn-generate w-full flex justify-center items-center gap-3"
+          className="w-full py-3 rounded-xl text-white font-semibold flex justify-center items-center gap-3
+                     shadow-[inset_0_1px_2px_rgba(255,255,255,0.2),0_4px_12px_rgba(0,0,0,0.2)]
+                     transition-all"
+          style={{
+            background: "linear-gradient(180deg, #cc6545 0%, #b95339 100%)"
+          }}
+          onClick={() => setIsGenerating(true)}
           disabled={isGenerating}
         >
           {isGenerating ? (
             <>
-              Generating...
-              <div className="spinner"></div>
+              Generating…
+              <div className="spinner border-white"></div>
             </>
           ) : (
             "Generate"
@@ -69,8 +85,10 @@ export default function Home() {
         </button>
       </div>
 
-      <p className="text-[#86837c] text-sm">Only mint with $jesse</p>
+      {/* Bottom Text */}
+      <p className="text-[#86837c] text-sm mt-2">Only mint with $jesse</p>
 
+      {/* Contract */}
       <a
         href="https://basescan.org/token/0x50f88fe97f72cd3e75b9eb4f747f59bceba80d59"
         target="_blank"
@@ -78,6 +96,7 @@ export default function Home() {
       >
         $jesse : 0x50f88fe97f72cd3e75b9eb4f747f59bceba80d59
       </a>
+
     </main>
   );
 }
