@@ -1,0 +1,13 @@
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  },
+  "frame": {
+    "version": "1",
+    "name": "OnKit",
+    "iconUrl": "https://onkit-miniapp.vercel.app/favicon.ico",
+    "homeUrl": "https://onkit-miniapp.vercel.app"
+  }
+}
