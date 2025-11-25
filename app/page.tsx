@@ -8,6 +8,7 @@ import AvatarGenerator from "./components/AvatarGenerator";
 export default function Home() {
   const { address, isConnected } = useAccount();
   const { connectors, connect } = useConnect();
+
   const [pfp, setPfp] = useState("");
 
   useEffect(() => {
@@ -20,26 +21,27 @@ export default function Home() {
       const ctx = await sdk.context;
       if (ctx?.user?.pfpUrl) setPfp(ctx.user.pfpUrl);
     }
+
     init();
   }, [isConnected, connect, connectors]);
 
   return (
     <main className="min-h-screen bg-[#f5f6f7] flex flex-col items-center px-5 py-6">
 
-      {/* WALLET CENTER TOP */}
+      {/* WALLET CENTER */}
       <div className="w-full flex justify-center mb-6">
         <div className="px-4 py-2 rounded-full bg-[#e6a93e] text-white text-sm font-semibold shadow">
           {address ? `${address.slice(0,6)}...${address.slice(-4)}` : "Connecting…"}
         </div>
       </div>
 
-      {/* MAIN CARD */}
-      <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-md border border-[#e5e6e7]">
+      {/* GENERATOR */}
+      <div className="w-full max-w-md">
         <AvatarGenerator userPfp={pfp} />
       </div>
 
       {/* FOOTER */}
-      <p className="text-sm text-[#7d7d7d] mt-3">Only mint with $jesse</p>
+      <p className="text-sm text-[#7d7d7d] mt-4">Only mint with $jesse</p>
 
       <a
         href="https://basescan.org/token/0x50f88fe97f72cd3e75b9eb4f747f59bceba80d59"

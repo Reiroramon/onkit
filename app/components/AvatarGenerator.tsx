@@ -14,17 +14,14 @@ export default function AvatarGenerator({ userPfp }: AvatarGeneratorProps) {
     if (!userPfp) return;
 
     setLoading(true);
+    const blob = await fetch(userPfp).then((r) => r.blob());
 
     const form = new FormData();
-    const blob = await fetch(userPfp).then((r) => r.blob());
     form.append("pfp", blob, "pfp.png");
 
-    const res = await fetch("/api/generate", {
-      method: "POST",
-      body: form,
-    });
-
+    const res = await fetch("/api/generate", { method: "POST", body: form });
     const data = await res.json();
+
     setImage(data.output);
     setLoading(false);
   }
@@ -32,32 +29,42 @@ export default function AvatarGenerator({ userPfp }: AvatarGeneratorProps) {
   return (
     <div className="w-full flex flex-col items-center">
 
-      {/* INITIAL BLURRED PFP (300x300, centered) */}
-      {!image && userPfp && (
-        <div className="relative w-[300px] h-[300px] mb-6 rounded-2xl overflow-hidden">
+      {/* BLUR PFP 400×400 */}
+      {!image && (
+        <div
+          className="relative mt-10" // <-- membuat jarak dari wallet (TIDAK MEPET)
+          style={{
+            width: "400px",
+            height: "400px",
+          }}
+        >
           <img
             src={userPfp}
-            className="w-full h-full object-cover blur-xl scale-110 opacity-70"
+            className="w-full h-full object-cover blur-xl opacity-70 rounded-2xl"
           />
 
-          {/* BUTTON IN CENTER OF BLUR */}
+          {/* Generate Button CENTERED */}
           <button
             onClick={generate}
             disabled={loading}
-            className="absolute inset-0 flex items-center justify-center
-                       bg-black/30 text-white font-semibold text-lg rounded-2xl
-                       hover:bg-black/40 transition"
+            className="
+              absolute top-1/2 left-1/2 
+              -translate-x-1/2 -translate-y-1/2
+              px-6 py-3 rounded-xl bg-[#cc6545] text-white 
+              text-lg font-semibold shadow-md
+              hover:opacity-90 disabled:opacity-50
+            "
           >
             {loading ? "Generating..." : "Generate Onkit"}
           </button>
         </div>
       )}
 
-      {/* OUTPUT IMAGE */}
+      {/* RESULT */}
       {image && (
         <img
           src={image}
-          className="w-full rounded-2xl shadow-lg"
+          className="w-full max-w-md rounded-2xl shadow-lg mt-6"
         />
       )}
     </div>
