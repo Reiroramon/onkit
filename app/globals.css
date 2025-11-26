@@ -1,54 +1,47 @@
 @import "tailwindcss/preflight";
 @import "tailwindcss/utilities";
 
+/* ------------------------------------------------------------- */
+/*                      BASE GLOBAL CARTOON UI                   */
+/* ------------------------------------------------------------- */
+
 body {
-  background: #f3f4f6;
+  background: #56616E; /* sesuai karakter */
   -webkit-font-smoothing: antialiased;
 }
-/* Smooth blur effect */
+
+/* HAPUS efek blur modern */
 .blur-xl {
-  filter: blur(20px);
+  filter: none;
 }
 
-/* Rounded + shadow for main block */
+/* Card / block cartoon global style */
 .main-block {
-  border-radius: 22px;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
-}
-@keyframes pulseSlow {
-  0% { opacity: 0.4; }
-  50% { opacity: 0.8; }
-  100% { opacity: 0.4; }
+  border-radius: 24px;
+  border: 4px solid #000;
+  background: #60707E;
+  box-shadow: 8px 8px 0 #000; /* cartoon offset shadow */
 }
 
-.animate-pulse-slow {
-  animation: pulseSlow 4s ease-in-out infinite;
-}
-@keyframes shimmer {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
+/* HAPUS animasi-animasi modern */
+.animate-pulse-slow { animation: none; }
+.animate-shimmer { animation: none; }
 
-.animate-shimmer {
-  background-size: 200% 200%;
-  animation: shimmer 3s linear infinite;
-}
-/* Container */
+/* ------------------------------------------------------------- */
+/*                      ONKIT TITLE FINAL                        */
+/* ------------------------------------------------------------- */
+
 .font-onkit {
   font-family: "Lilita One", sans-serif;
   display: inline-flex;
-  gap: 2px;
+  gap: 4px;
+  line-height: 1;
 }
 
-/* Span huruf — berisi gradient + outline + animasi */
 .onkit-seq span {
   opacity: 0;
-
-  /* Outline dulu */
-  -webkit-text-stroke: 3px #000;
+  -webkit-text-stroke: 5px #000;
   color: transparent;
-
-  /* Gradient (SETIAP HURUF PUNYA GRADIENT SENDIRI) */
   background: linear-gradient(
     180deg,
     #ffb794 0%,
@@ -61,38 +54,30 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
 
-  /* Animasi huruf */
   transform: translateY(32px) scale(0.85);
   display: inline-block;
+  position: relative;
 
-  animation: fadeUp 0.9s cubic-bezier(.25,.8,.25,1) forwards;
+  animation:
+    letterIn 0.9s cubic-bezier(.25,.8,.25,1) forwards,
+    glossyMove 4s ease-in-out infinite;
 }
 
-/* delay huruf */
-.onkit-seq span:nth-child(1) { animation-delay: .2s; }
-.onkit-seq span:nth-child(2) { animation-delay: .7s; }
-.onkit-seq span:nth-child(3) { animation-delay: 1.2s; }
-.onkit-seq span:nth-child(4) { animation-delay: 1.7s; }
-.onkit-seq span:nth-child(5) { animation-delay: 2.2s; }
+/* Delay huruf */
+.onkit-seq span:nth-child(1) { animation-delay: .2s, 0s; }
+.onkit-seq span:nth-child(2) { animation-delay: .7s, 0s; }
+.onkit-seq span:nth-child(3) { animation-delay: 1.2s, 0s; }
+.onkit-seq span:nth-child(4) { animation-delay: 1.7s, 0s; }
+.onkit-seq span:nth-child(5) { animation-delay: 2.2s, 0s; }
 
-/* animasi per huruf */
-@keyframes fadeUp {
-  0%   { opacity:0; transform:translateY(32px) scale(0.85); }
-  60%  { opacity:1; transform:translateY(-8px) scale(1.05); }
-  100% { opacity:1; transform:translateY(0) scale(1); }
+@keyframes letterIn {
+  0%   { opacity: 0; transform: translateY(32px) scale(0.85); }
+  60%  { opacity: 1; transform: translateY(-6px) scale(1.05); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* optional: glossy move per huruf */
 @keyframes glossyMove {
   0% { background-position: 50% 0%; }
   50% { background-position: 50% 100%; }
   100% { background-position: 50% 0%; }
-}
-
-/* ACTIVATE moving glossy */
-.onkit-seq span {
-  animation-name: fadeUp, glossyMove;
-  animation-duration: 0.9s, 4s;
-  animation-delay: var(--delay), 0s;
-  animation-fill-mode: forwards, infinite;
 }

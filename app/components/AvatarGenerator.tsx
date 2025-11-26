@@ -27,56 +27,55 @@ export default function AvatarGenerator({ userPfp }: AvatarGeneratorProps) {
   }
 
   return (
-    <div className="w-full flex flex-col items-center mt-4">
+    <div className="w-full flex flex-col items-center mt-6">
 
-      {/* FRAME */}
+      {/* CARTOON FRAME */}
       <div
         className="
           relative
-          rounded-[24px]
-          overflow-hidden
-          bg-[#3b4652]
-          border border-[#505c68]
-          shadow-[0_4px_10px_rgba(0,0,0,0.35)]
+          bg-[#60707E]
+          border-[5px] border-black
+          rounded-[28px]
+          shadow-[10px_10px_0_#000]
           flex items-center justify-center
         "
-        style={{ width: "340px", height: "340px" }}
+        style={{ width: "330px", height: "330px" }}
       >
 
         {/* BEFORE GENERATE */}
         {!image && userPfp && (
           <>
-            {/* BLUR PFP — cartoon muted */}
             <img
               src={userPfp}
+              className="
+                absolute inset-0 z-0 rounded-[28px]
+              "
               style={{
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
-                filter: "blur(22px)",
-                opacity: 0.55,
-                transform: "scale(1.22)",
+                opacity: 0.4,
+                transform: "scale(1.05)",
+                filter: "grayscale(40%) contrast(80%)",
               }}
-              className="absolute inset-0 z-0"
             />
 
-            {/* BUTTON — cartoon orange */}
             <button
               onClick={generate}
               disabled={loading}
               className="
                 absolute bottom-6 left-1/2 -translate-x-1/2
-                px-7 py-3
-                font-semibold
+                bg-[#D46A42]
+                text-black font-bold
+                px-6 py-2
                 rounded-xl
-                text-base
-                text-white
-                bg-[#e68a57]
-                hover:bg-[#d66a3d]
-                active:scale-95
-                shadow-[0_3px_6px_rgba(0,0,0,0.35)]
+                border-4 border-black
+                shadow-[4px_4px_0_#000]
+                active:shadow-[2px_2px_0_#000]
+                active:translate-x-[2px]
+                active:translate-y-[2px]
                 transition-all
-                z-20
+                text-sm
               "
             >
               {loading ? "Generating..." : "Generate Onkit"}
@@ -88,25 +87,39 @@ export default function AvatarGenerator({ userPfp }: AvatarGeneratorProps) {
         {image && (
           <img
             src={image}
-            className="w-full h-full object-cover rounded-[24px] z-10"
+            className="
+              w-full h-full object-cover
+              rounded-[28px]
+              border-[5px] border-black
+            "
           />
         )}
       </div>
 
       {/* COST TEXT */}
-      <p className="text-gray-300 text-sm mt-3">Cost: 230 $jesse</p>
+      <p className="text-black font-bold mt-4 text-sm">
+        Cost: <span className="text-[#D46A42]">$jesse</span>
+      </p>
 
       {/* SHARE BUTTON */}
       {image && (
         <button
           className="
-            mt-4 px-5 py-3 text-sm rounded-xl font-medium
-            bg-[#d9dde0] text-[#2d3440]
-            shadow hover:bg-white
-            active:scale-95 transition
+            mt-4
+            bg-[#EFB548]
+            text-black font-bold
+            px-5 py-2
+            rounded-xl
+            border-4 border-black
+            shadow-[4px_4px_0_#000]
+            active:shadow-[2px_2px_0_#000]
+            active:translate-x-[2px]
+            active:translate-y-[2px]
+            transition-all
+            text-sm
           "
         >
-          Share to Farcaster 🚀
+          Share to Farcaster
         </button>
       )}
     </div>
