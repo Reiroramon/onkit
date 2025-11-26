@@ -9,54 +9,74 @@ interface AvatarGeneratorProps {
 export default function AvatarGenerator({ userPfp }: AvatarGeneratorProps) {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
+  const [showConfetti, setShowConfetti] = useState(false);
 
   async function generate() {
     if (!userPfp) return;
 
     setLoading(true);
-    const blob = await fetch(userPfp).then((r) => r.blob());
+    setShowConfetti(false);
 
+    const blob = await fetch(userPfp).then((r) => r.blob());
     const form = new FormData();
     form.append("pfp", blob, "pfp.png");
 
     const res = await fetch("/api/generate", { method: "POST", body: form });
     const data = await res.json();
 
-    setImage(data.output);
+    setTimeout(() => {
+      setImage(data.output);
+      setShowConfetti(true);
+
+      setTimeout(() => setShowConfetti(false), 1500);
+    }, 1300);
+
     setLoading(false);
   }
 
   return (
-    <div className="w-full flex flex-col items-center mt-6">
+    <div className="w-full flex flex-col items-center mt-6 relative">
 
-      {/* CARTOON FRAME */}
+      {/* CONFETTI */}
+      {showConfetti && (
+        <>
+          {[...Array(12)].map((_, i) => (
+            <div
+              key={i}
+              className="confetti-dot"
+              style={{
+                left: `${20 + Math.random() * 60}%`,
+                background: ["#00aaff", "#74a7ff", "#29f3c3"][i % 3],
+                animationDelay: `${i * 0.05}s`,
+              }}
+            />
+          ))}
+        </>
+      )}
+
+      {/* CARD */}
       <div
         className="
-          relative
-          bg-[#60707E]
-          border-[5px] border-black
-          rounded-[28px]
-          shadow-[10px_10px_0_#000]
-          flex items-center justify-center
+          relative rounded-2xl overflow-hidden
+          border border-white/10
+          bg-white/5 backdrop-blur-xl
+          shadow-[0_20px_40px_rgba(0,0,0,0.45)]
+          hover:shadow-[0_0_25px_#00aaff55]
+          transition-all
         "
         style={{ width: "330px", height: "330px" }}
       >
-
-        {/* BEFORE GENERATE */}
+        {/* PREVIEW BEFORE GENERATE */}
         {!image && userPfp && (
           <>
             <img
               src={userPfp}
-              className="
-                absolute inset-0 z-0 rounded-[28px]
-              "
+              className={`absolute w-full h-full object-cover opacity-40 ${
+                loading ? "rotate-slow" : ""
+              }`}
               style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                opacity: 0.4,
-                transform: "scale(1.05)",
-                filter: "grayscale(40%) contrast(80%)",
+                filter: "blur(14px) saturate(80%) brightness(0.8)",
+                transform: "scale(1.18)",
               }}
             />
 
@@ -65,20 +85,14 @@ export default function AvatarGenerator({ userPfp }: AvatarGeneratorProps) {
               disabled={loading}
               className="
                 absolute bottom-6 left-1/2 -translate-x-1/2
-                bg-[#D46A42]
-                text-black font-bold
-                px-6 py-2
-                rounded-xl
-                border-4 border-black
-                shadow-[4px_4px_0_#000]
-                active:shadow-[2px_2px_0_#000]
-                active:translate-x-[2px]
-                active:translate-y-[2px]
+                px-7 py-2.5 text-sm font-semibold rounded-full
+                bg-linear-to-r from-[#00aaff] to-[#0088ff]
+                hover:brightness-110 active:scale-95
+                shadow-[0_4px_14px_rgba(0,0,0,0.5)]
                 transition-all
-                text-sm
               "
             >
-              {loading ? "Generating..." : "Generate Onkit"}
+              {loading ? "Blending…" : "Mint with $jesse →"}
             </button>
           </>
         )}
@@ -89,34 +103,23 @@ export default function AvatarGenerator({ userPfp }: AvatarGeneratorProps) {
             src={image}
             className="
               w-full h-full object-cover
-              rounded-[28px]
-              border-[5px] border-black
+              rounded-2xl
+              shadow-[0_0_35px_#00aaff33]
             "
           />
         )}
       </div>
 
-      {/* COST TEXT */}
-      <p className="text-black font-bold mt-4 text-sm">
-        Cost: <span className="text-[#D46A42]">$jesse</span>
-      </p>
-
       {/* SHARE BUTTON */}
       {image && (
         <button
           className="
-            mt-4
-            bg-[#EFB548]
-            text-black font-bold
-            px-5 py-2
-            rounded-xl
-            border-4 border-black
-            shadow-[4px_4px_0_#000]
-            active:shadow-[2px_2px_0_#000]
-            active:translate-x-[2px]
-            active:translate-y-[2px]
+            mt-5 px-5 py-2.5 text-sm font-semibold
+            rounded-full
+            bg-linear-to-r from-[#74A7FF] to-[#3C6DFF]
+            text-white shadow-[0_4px_14px_rgba(0,0,0,0.45)]
+            hover:scale-105 active:scale-95
             transition-all
-            text-sm
           "
         >
           Share to Farcaster
