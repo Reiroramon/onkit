@@ -15,3 +15,84 @@ body {
   border-radius: 22px;
   box-shadow: 0 8px 18px rgba(0,0,0,0.15);
 }
+@keyframes pulseSlow {
+  0% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.4; }
+}
+
+.animate-pulse-slow {
+  animation: pulseSlow 4s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.animate-shimmer {
+  background-size: 200% 200%;
+  animation: shimmer 3s linear infinite;
+}
+/* Container */
+.font-onkit {
+  font-family: "Lilita One", sans-serif;
+  display: inline-flex;
+  gap: 2px;
+}
+
+/* Span huruf — berisi gradient + outline + animasi */
+.onkit-seq span {
+  opacity: 0;
+
+  /* Outline dulu */
+  -webkit-text-stroke: 3px #000;
+  color: transparent;
+
+  /* Gradient (SETIAP HURUF PUNYA GRADIENT SENDIRI) */
+  background: linear-gradient(
+    180deg,
+    #ffb794 0%,
+    #e97a45 25%,
+    #f8c54a 55%,
+    #ffd86b 75%,
+    #d7a022 100%
+  );
+  background-size: 100% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  /* Animasi huruf */
+  transform: translateY(32px) scale(0.85);
+  display: inline-block;
+
+  animation: fadeUp 0.9s cubic-bezier(.25,.8,.25,1) forwards;
+}
+
+/* delay huruf */
+.onkit-seq span:nth-child(1) { animation-delay: .2s; }
+.onkit-seq span:nth-child(2) { animation-delay: .7s; }
+.onkit-seq span:nth-child(3) { animation-delay: 1.2s; }
+.onkit-seq span:nth-child(4) { animation-delay: 1.7s; }
+.onkit-seq span:nth-child(5) { animation-delay: 2.2s; }
+
+/* animasi per huruf */
+@keyframes fadeUp {
+  0%   { opacity:0; transform:translateY(32px) scale(0.85); }
+  60%  { opacity:1; transform:translateY(-8px) scale(1.05); }
+  100% { opacity:1; transform:translateY(0) scale(1); }
+}
+
+/* optional: glossy move per huruf */
+@keyframes glossyMove {
+  0% { background-position: 50% 0%; }
+  50% { background-position: 50% 100%; }
+  100% { background-position: 50% 0%; }
+}
+
+/* ACTIVATE moving glossy */
+.onkit-seq span {
+  animation-name: fadeUp, glossyMove;
+  animation-duration: 0.9s, 4s;
+  animation-delay: var(--delay), 0s;
+  animation-fill-mode: forwards, infinite;
+}
