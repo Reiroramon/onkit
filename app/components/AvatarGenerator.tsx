@@ -27,7 +27,6 @@ export default function AvatarGenerator({ userPfp }: AvatarGeneratorProps) {
     setTimeout(() => {
       setImage(data.output);
       setShowConfetti(true);
-
       setTimeout(() => setShowConfetti(false), 1500);
     }, 1300);
 
@@ -54,46 +53,30 @@ export default function AvatarGenerator({ userPfp }: AvatarGeneratorProps) {
         </>
       )}
 
-      {/* CARD */}
-      <div
-        className="
-          relative rounded-2xl overflow-hidden
-          border border-white/10
-          bg-white/5 backdrop-blur-xl
-          shadow-[0_20px_40px_rgba(0,0,0,0.45)]
-          hover:shadow-[0_0_25px_#00aaff55]
-          transition-all
-        "
-        style={{ width: "330px", height: "330px" }}
-      >
-        {/* PREVIEW BEFORE GENERATE */}
+      {/* ----------------------- CARD ----------------------- */}
+     <div
+  style={{ width: 340, height: 340 }}
+  className="
+    relative rounded-[34px] overflow-hidden
+    bg-white/5 backdrop-blur-xl
+    border border-[#00bfff44]
+    shadow-[0_0_40px_#009dff22]
+    select-none
+  "
+>
+        {/* BEFORE GENERATE */}
         {!image && userPfp && (
           <>
             <img
               src={userPfp}
-              className={`absolute w-full h-full object-cover opacity-40 ${
-                loading ? "rotate-slow" : ""
-              }`}
+              className="absolute w-full h-full object-cover opacity-40"
               style={{
-                filter: "blur(14px) saturate(80%) brightness(0.8)",
                 transform: "scale(1.18)",
+                filter: "blur(14px) saturate(80%) brightness(0.8)",
+                pointerEvents: "none",
+                userSelect: "none",
               }}
             />
-
-            <button
-              onClick={generate}
-              disabled={loading}
-              className="
-                absolute bottom-6 left-1/2 -translate-x-1/2
-                px-7 py-2.5 text-sm font-semibold rounded-full
-                bg-linear-to-r from-[#00aaff] to-[#0088ff]
-                hover:brightness-110 active:scale-95
-                shadow-[0_4px_14px_rgba(0,0,0,0.5)]
-                transition-all
-              "
-            >
-              {loading ? "Blending…" : "Mint with $jesse →"}
-            </button>
           </>
         )}
 
@@ -101,14 +84,48 @@ export default function AvatarGenerator({ userPfp }: AvatarGeneratorProps) {
         {image && (
           <img
             src={image}
-            className="
-              w-full h-full object-cover
-              rounded-2xl
-              shadow-[0_0_35px_#00aaff33]
-            "
+            className="absolute w-full h-full object-cover"
+            style={{
+              pointerEvents: "none",
+              userSelect: "none",
+              touchAction: "none",
+            }}
           />
         )}
       </div>
+
+      {/* -------- BUTTON BELOW FRAME (FIXED) -------- */}
+     {/* BEFORE GENERATE */}
+{!image && userPfp && (
+  <button
+    onClick={generate}
+    disabled={loading}
+    className="
+      mt-5 w-[160px] h-[44px] rounded-full
+      font-semibold text-[15px] text-white
+      bg-linear-to-r from-[#00d8ff] to-[#0077ff]
+      shadow-[0_0_22px_#009dff66]
+      hover:brightness-110 active:scale-95 transition-all
+    "
+  >
+    {loading ? "Generating…" : "Generate"}
+  </button>
+)}
+
+{/* AFTER GENERATE */}
+{image && (
+  <button
+    className="
+      mt-5 w-[160px] h-[44px] rounded-full
+      font-bold text-[15px] text-white tracking-wide
+      bg-linear-to-r from-[#00faff] to-[#0094ff]
+      shadow-[0_0_28px_#00e0ffaa]
+      hover:brightness-125 active:scale-95 transition-all
+    "
+  >
+    Mint
+  </button>
+)}
 
       {/* SHARE BUTTON */}
       {image && (

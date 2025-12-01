@@ -4,6 +4,10 @@ import { useAccount, useConnect } from "wagmi";
 import { useEffect, useState } from "react";
 import { sdk } from "@farcaster/miniapp-sdk";
 import AvatarGenerator from "./components/AvatarGenerator";
+import { erc20Abi, formatUnits } from "viem";
+import { useReadContract } from "wagmi";
+
+const JESSE_TOKEN = "0x50f88fe97f72cd3e75b9eb4f747f59bceba80d59"; 
 
 export default function Home() {
   const { address, isConnected } = useAccount();
@@ -12,6 +16,19 @@ export default function Home() {
   const [balance, setBalance] = useState(260); // DEMO: dynamic nanti
 
   const enoughBalance = balance >= 230;
+
+const { data: jesseBalanceRaw } = useReadContract({
+  address: JESSE_TOKEN,
+  abi: erc20Abi,
+  functionName: "balanceOf",
+  args: address ? [address] : undefined,
+  query: { enabled: !!address }
+});
+
+const jesseBalance = jesseBalanceRaw
+  ? Number(formatUnits(jesseBalanceRaw, 18)).toFixed(2)
+  : "0.00";
+
 
   useEffect(() => {
     async function init() {
@@ -38,49 +55,59 @@ export default function Home() {
       {/* HEX OVERLAY */}
       <div className="hex-overlay absolute inset-0 z-0" />
 
-      {/* WALLET BAR */}
-      <div className="relative z-10 mb-8">
-        <div
-          className="
-            px-5 py-2 text-sm font-medium rounded-full
-            bg-white/10 backdrop-blur-lg
-            border border-white/20
-            shadow-[0_4px_12px_rgba(0,0,0,0.45)]
-          "
-        >
-          {address ? `${address.slice(0,6)}...${address.slice(-4)}` : "Connecting…"}
-        </div>
-      </div>
+    {/* WALLET PREMIUM ONKIT */}
+{address && (
+  <div className="relative flex justify-center mt-1 z-10">
+    <div className="onkit-wallet">
+      {address.slice(0, 6)}…{address.slice(-4)}
 
-      {/* HEADLINE */}
-      <h1
-        className="
-          text-3xl font-bold tracking-tight text-center
-          opacity-0 animate-[slideIn_0.7s_ease-out_forwards]
-        "
-      >
-        Mint your Jesse-blended NFT now
-      </h1>
+      {/* PARTICLES */}
+      {Array.from({ length: 6 }).map((_, i) => (
+        <span
+          key={i}
+          style={{
+            left: `${10 + Math.random() * 80}%`,
+            top: `${20 + Math.random() * 40}%`,
+            animationDelay: `${Math.random() * 2}s`,
+            animationDuration: `${3 + Math.random() * 2}s`,
+          }}
+        />
+      ))}
+    </div>
+  </div>
+)}
 
-      {/* BALANCE */}
-      <div className="mt-4 mb-4 text-white/70 text-sm">
-        Balance:{" "}
-        <span className={enoughBalance ? "pulse-green font-semibold" : "text-red-400 font-semibold"}>
-          {balance} $jesse
-        </span>
-      </div>
+     <h1 className="font-onkit onkit-seq text-[72px] md:text-[90px]">
+  <span>O</span>
+  <span>n</span>
+  <span>k</span>
+  <span>i</span>
+  <span>t</span>
+</h1>
 
       {/* NFT GENERATOR */}
       <AvatarGenerator userPfp={pfp} />
 
-      {/* CONTRACT LINK */}
-      <a
-        href="https://basescan.org/token/0x50f88fe97f72cd3e75b9eb4f747f59bceba80d59"
-        target="_blank"
-        className="text-white/50 underline text-xs mt-6 hover:text-white transition"
-      >
-        Contract: 0x50f8...0d59
-      </a>
+{/* BALANCE */}
+     <p className="text-[#71C7FF] font-semibold text-sm mt-4 drop-shadow-[0_0_6px_#0094ff]">
+  Balance: {jesseBalance} $jesse
+</p>
+    
+      {/* BUY JESSE LINK */}
+<a
+  href="https://zora.co/@jessepollak"
+  target="_blank"
+  className="text-[#6eeeff] underline text-sm mt-3 hover:brightness-150 transition flex items-center gap-2"
+>
+  Buy $jesse →
+</a>
+{/* HOLOGRAM JESSE COIN */}
+<img
+  src="/icons/jesse-coin.png"
+  alt="$jesse"
+  className="holo-coin"
+/>
+
 
       {/* slide animation */}
       <style>{`
