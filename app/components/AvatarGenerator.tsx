@@ -4,6 +4,7 @@ import { useState } from "react";
 
 interface AvatarGeneratorProps {
   userPfp: string;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function AvatarGenerator({ userPfp }: AvatarGeneratorProps) {

@@ -6,6 +6,7 @@ import { sdk } from "@farcaster/miniapp-sdk";
 import AvatarGenerator from "./components/AvatarGenerator";
 import { erc20Abi, formatUnits } from "viem";
 import { useReadContract } from "wagmi";
+import GenerateAnimation from "./components/GenerateAnimation";
 
 const JESSE_TOKEN = "0x50f88fe97f72cd3e75b9eb4f747f59bceba80d59"; 
 
@@ -16,6 +17,8 @@ export default function Home() {
   const [balance, setBalance] = useState(260); // DEMO: dynamic nanti
 
   const enoughBalance = balance >= 230;
+
+   const [loading, setLoading] = useState(false);
 
 const { data: jesseBalanceRaw } = useReadContract({
   address: JESSE_TOKEN,
@@ -85,8 +88,13 @@ const jesseBalance = jesseBalanceRaw
   <span>t</span>
 </h1>
 
-      {/* NFT GENERATOR */}
-      <AvatarGenerator userPfp={pfp} />
+     {/* NFT GENERATOR */}
+{loading ? (
+  <GenerateAnimation />
+) : (
+  <AvatarGenerator userPfp={pfp} setLoading={setLoading} />
+)}
+
 
 {/* BALANCE */}
      <p className="text-[#71C7FF] font-semibold text-sm mt-4 drop-shadow-[0_0_6px_#0094ff]">

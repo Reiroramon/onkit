@@ -423,3 +423,31 @@ body::after {
   0%   { transform: translateY(-100%); }
   100% { transform: translateY(100%); }
 }
+@keyframes left-glow {
+  0% { opacity: 0; transform: translateX(-120px) scale(0.7); }
+  40% { opacity: 1; transform: translateX(0) scale(1); }
+  60% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes right-glow {
+  0% { opacity: 0; transform: translateX(120px) scale(0.7); }
+  40% { opacity: 1; transform: translateX(0) scale(1); }
+  60% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes center-flash {
+  0% { opacity: 0; transform: scale(0.2); }
+  40% { opacity: 0; }
+  50% { opacity: 1; transform: scale(2.3); }
+  60% { opacity: 0; transform: scale(0.3); }
+  100% { opacity: 0; }
+}
+
+@keyframes swirl {
+  0% { opacity: 0; transform: rotate(0deg) scale(0.3); }
+  40% { opacity: 0; }
+  60% { opacity: 1; transform: rotate(180deg) scale(1); }
+  100% { opacity: 1; transform: rotate(360deg) scale(1.1); }
+}
